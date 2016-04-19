@@ -1,5 +1,7 @@
 # weblinkjs
 
+* [API Documentation](https://jdcrensh.github.io/weblinkjs/docs)
+
 An abstraction built around building, deploying, and invoking Javascript
 through custom buttons/links (weblinks) in Salesforce. Including an added
 benefit of developing using ES6 Javascript (with Babel).
