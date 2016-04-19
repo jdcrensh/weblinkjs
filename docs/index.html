@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>weblinkjs Index</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.lumen.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top ">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">weblinkjs</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-dialogs_alert.html">dialogs/alert</a></li><li><a href="module-dialogs_confirm.html">dialogs/confirm</a></li><li><a href="module-dialogs_index.html">dialogs/index</a></li><li><a href="module-lib_util.html">lib/util</a></li><li><a href="module-modules_Contact_Say_Name.html">modules/Contact/Say_Name</a></li><li><a href="module-modules_index.html">modules/index</a></li><li><a href="module-weblinks.html">weblinks</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+		<div class="col-sm-3 col-md-3">
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-8">
+	
+		<div id="main">
+			
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+    <section class="readme-section">
+        <article><h1>weblinkjs</h1><ul>
+<li><a href="https://jdcrensh.github.io/weblinkjs/docs">API Documentation</a></li>
+</ul>
+<p>An abstraction built around building, deploying, and invoking Javascript
+through custom buttons/links (weblinks) in Salesforce. Including an added
+benefit of developing using ES6 Javascript (with Babel).</p>
+<p>The project may be used as a template for centralizing an org's custom weblink
+javascript. Either fork this repository through Github, or clone and push to
+your own public/private remote.</p>
+<h2>Usage</h2><p>By convention, code for each weblink is defined inside a javascript module;
+i.e. <code>src/modules/&lt;SObjectType&gt;/&lt;Weblink API Name&gt;.js</code>. However, this is not
+enforced, so you may adapt with your own naming conventions as long as the
+modules reside in <code>src/modules/</code>.</p>
+<p>Since these are self-contained modules, code stored on the weblink itself
+is fairly minimal:</p>
+<pre class="prettyprint source lang-javascript"><code>{!REQUIRESCRIPT('/resource/weblinkjs/weblinks.js')}
+
+weblinks.invoke('Account/My_Custom_Weblink');</code></pre><p>Whereas its module would implement the logic:</p>
+<pre class="prettyprint source lang-javascript"><code>// src/modules/Account/My_Custom_Weblink.js
+export function exec(params) {
+  alert('hello world!');
+};</code></pre><h3>Example</h3><p>See <a href="src/modules/Contact/Say_Name.js">Contact/Say_Name</a></p>
+<h3>Parameters</h3><p>One minor drawback of moving code to static resources is that merge fields
+cannot be parsed. To get around this limitation, you can pass them as named
+parameters for the module to parse.</p>
+<pre class="prettyprint source lang-javascript"><code>{!REQUIRESCRIPT('/resource/weblinkjs')}
+'use strict';
+
+weblinks.invoke('Account/My_Custom_Weblink', {
+  sessionId: '{!API.Session_ID}',
+  id: '{!Work_Order__c.Id}'
+});</code></pre><p>Be aware that other than the record's Id, most values <strong>cannot</strong> be relied on
+to be up-to-date. Merge fields are only evaluated once; i.e. the moment before
+the page is loaded.</p>
+<p>One potentially common scenario where this would be problematic occurs when one
+user (Bob) opens a record's detail page, then a few moments later, the same
+user (or some other, doesn't matter) makes some field update that would result
+in the value differing from the value it was the moment before the page was
+initially loaded by Bob. In this scenario, if Bob then clicks a javascript
+button using merge fields, the data he'd be using will now be out-of-date.</p>
+<p>A solution to the above scenario is to only pass the record's Id, and use
+Ajax to query the record every time the button is clicked (using Salesforce's
+<code>connection.js</code> or <a href="https://jsforce.github.io"><code>jsforce</code></a> via CDN). Note that
+this has a downside of its own, which is that it counts against the limit of
+API calls your org can make in a single day.</p>
+<h2>Development</h2><p>Requirements:</p>
+<ul>
+<li><a href="https://nodejs.org/en/">Node.js</a></li>
+<li><a href="https://git-scm.com/">Git</a></li>
+<li>Some kind of shell prompt<ul>
+<li>Good options for Windows are <a href="https://www.cygwin.com/">Cygwin</a> or Git BASH
+(included in the Windows Git installation).</li>
+</ul>
+</li>
+</ul>
+<p>Launch a Bash-like shell, clone the repo to where your projects live, then install:</p>
+<pre class="prettyprint source lang-bash"><code>cd ~/Projects
+git clone ssh://git@stash.ecoact.org:7999/eo/weblinkjs.git && cd weblinkjs
+npm install</code></pre><p>Now you may either edit one of the existing modules, located in <code>/src/modules</code>,
+or create a new one.</p>
+<p>To create a module for a weblink, create a Javascript file named
+<code>/src/modules/&lt;SObjectType&gt;/&lt;Weblink API Name&gt;.js</code>. If the directory doesn't
+already exist for the SObjectType, create it first.</p>
+<p>Example template:</p>
+<pre class="prettyprint source lang-javascript"><code>export const dependencies = [
+  '//mycdn.com/path/to/cdn/resource'
+];
+export function exec(params) {
+  // ... your weblink code goes here, parsing params as you see fit ...
+};</code></pre><p><strong>Remember</strong> to also add code for invoking the module in the weblink itself,
+as shown in the Usage section above.</p>
+<p>Once you're done making changes, build the library:</p>
+<pre class="prettyprint source lang-bash"><code>npm run build</code></pre><p>Then deploy using your Salesforce credentials:</p>
+<pre class="prettyprint source lang-bash"><code>npm run deploy -- -u &lt;username> -p &lt;password> -t &lt;security token> -l https://test.salesforce.com</code></pre><p>To save time, you could build and deploy at the same time:</p>
+<pre class="prettyprint source lang-bash"><code>npm run build && npm run deploy -- -u &lt;username> -p &lt;password> -t &lt;security token> -l https://test.salesforce.com</code></pre></article>
+    </section>
+
+
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
+	
+
+</div>
+</div>
+
+<div class="modal fade" id="searchResults">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Search results</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+
+<footer>
+
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+<script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			var id = $( heading ).attr( "id" );
+			return id && id.replace(/\~/g, '-inner-').replace(/\./g, '-static-') || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		SearcherDisplay.init();
+	});
+</script>
+
+</body>
+</html>
