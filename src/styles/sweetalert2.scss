@@ -1,0 +1,8 @@
+@import '~sweetalert2/src/sweetalert2.scss';
+
+/* Fixes SweetAlert2's buttons when loaded
+ * alongside default Salesforce stylesheets
+ */
+button.styled {
+  background: none;
+}

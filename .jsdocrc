@@ -1,0 +1,31 @@
+{
+  "opts": {
+    "readme": "README.md",
+    "recurse": true,
+    "template": "./node_modules/ink-docstrap/template",
+    "destination": "./docs/"
+  },
+  "plugins": [
+    "plugins/markdown"
+  ],
+  "templates": {
+    "systemName": "weblinkjs",
+    "footer": "",
+    "copyright":  "",
+    "includeDate": false,
+    "navType": "vertical",
+    "theme": "lumen",
+    "linenums": true,
+    "collapseSymbols": false,
+    "inverseNav": false,
+    "outputSourceFiles": true,
+    "outputSourcePath": true,
+    "syntaxTheme": "default",
+    "sort": true
+  },
+  "source": {
+    "include": ["src"],
+    "includePattern": ".+\\.js(doc)?$",
+    "excludePattern": "(^|\\/|\\\\)_"
+  }
+}
