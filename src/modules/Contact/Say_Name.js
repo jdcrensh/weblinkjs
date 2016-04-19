@@ -13,6 +13,9 @@ export const dependencies = [
   '//cdnjs.cloudflare.com/ajax/libs/jsforce/1.6.0/jsforce.min.js'
 ];
 
+/**
+ * Some greetings
+ */
 const greetings = [
   'Hello',
   'Salut',
@@ -25,6 +28,9 @@ const greetings = [
   'Bonjour'
 ];
 
+/**
+ * SweetAlert's alert types
+ */
 const alertTypes = [
   'success',
   'error',
@@ -33,8 +39,16 @@ const alertTypes = [
   'question'
 ];
 
+/**
+ * Keep track of the number of times the user has clicked the button
+ */
 let timesClicked = 0;
 
+/**
+ * Get a random element from the given Array
+ * @param {Array} arr - the Array
+ * @returns a random element from the Array
+ */
 const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 /**
