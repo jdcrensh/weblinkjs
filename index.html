@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Weblinkjs by jdcrensh</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Weblinkjs</h1>
+          <h2>An abstraction built around building, deploying, and invoking Javascript through custom buttons/links (weblinks) in Salesforce</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/jdcrensh/weblinkjs/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/jdcrensh/weblinkjs/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/jdcrensh/weblinkjs" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a id="weblinkjs" class="anchor" href="#weblinkjs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>weblinkjs</h1>
+
+<p>An abstraction built around building, deploying, and invoking Javascript
+through custom buttons/links (weblinks) in Salesforce. Including an added
+benefit of developing using ES6 Javascript (with Babel).</p>
+
+<p>The project may be used as a template for centralizing an org's custom weblink
+javascript. Either fork this repository through Github, or clone and push to
+your own public/private remote.</p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>By convention, code for each weblink is defined inside a javascript module;
+i.e. <code>src/modules/&lt;SObjectType&gt;/&lt;Weblink API Name&gt;.js</code>. However, this is not
+enforced, so you may adapt with your own naming conventions as long as the
+modules reside in <code>src/modules/</code>.</p>
+
+<p>Since these are self-contained modules, code stored on the weblink itself
+is fairly minimal:</p>
+
+<div class="highlight highlight-source-js"><pre>{<span class="pl-k">!</span><span class="pl-c1">REQUIRESCRIPT</span>(<span class="pl-s"><span class="pl-pds">'</span>/resource/weblinkjs/weblinks.js<span class="pl-pds">'</span></span>)}
+
+<span class="pl-smi">weblinks</span>.<span class="pl-en">invoke</span>(<span class="pl-s"><span class="pl-pds">'</span>Account/My_Custom_Weblink<span class="pl-pds">'</span></span>);</pre></div>
+
+<p>Whereas its module would implement the logic:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// src/modules/Account/My_Custom_Weblink.js</span>
+<span class="pl-k">export</span> <span class="pl-k">function</span> <span class="pl-en">exec</span>(<span class="pl-smi">params</span>) {
+  <span class="pl-en">alert</span>(<span class="pl-s"><span class="pl-pds">'</span>hello world!<span class="pl-pds">'</span></span>);
+};</pre></div>
+
+<h3>
+<a id="parameters" class="anchor" href="#parameters" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Parameters</h3>
+
+<p>One minor drawback of moving code to static resources is that merge fields
+cannot be parsed. To get around this limitation, you can pass them as named
+parameters for the module to parse.</p>
+
+<div class="highlight highlight-source-js"><pre>{<span class="pl-k">!</span><span class="pl-c1">REQUIRESCRIPT</span>(<span class="pl-s"><span class="pl-pds">'</span>/resource/weblinkjs<span class="pl-pds">'</span></span>)}
+<span class="pl-s"><span class="pl-pds">'</span>use strict<span class="pl-pds">'</span></span>;
+
+<span class="pl-smi">weblinks</span>.<span class="pl-en">invoke</span>(<span class="pl-s"><span class="pl-pds">'</span>Account/My_Custom_Weblink<span class="pl-pds">'</span></span>, {
+  sessionId<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>{!API.Session_ID}<span class="pl-pds">'</span></span>,
+  id<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>{!Work_Order__c.Id}<span class="pl-pds">'</span></span>
+});</pre></div>
+
+<p>Be aware that other than the record's Id, most values <strong>cannot</strong> be relied on
+to be up-to-date. Merge fields are only evaluated once; i.e. the moment before
+the page is loaded.</p>
+
+<p>One potentially common scenario where this would be problematic occurs when one
+user (Bob) opens a record's detail page, then a few moments later, the same
+user (or some other, doesn't matter) makes some field update that would result
+in the value differing from the value it was the moment before the page was
+initially loaded by Bob. In this scenario, if Bob then clicks a javascript
+button using merge fields, the data he'd be using will now be out-of-date.</p>
+
+<p>A solution to the above scenario is to only pass the record's Id, and use
+Ajax to query the record every time the button is clicked (using Salesforce's
+<code>connection.js</code> or <a href="https://jsforce.github.io"><code>jsforce</code></a> via CDN). Note that
+this has a downside of its own, which is that it counts against the limit of
+API calls your org can make in a single day.</p>
+
+<h2>
+<a id="development" class="anchor" href="#development" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Development</h2>
+
+<p>Requirements:</p>
+
+<ul>
+<li><a href="https://nodejs.org/en/">Node.js</a></li>
+<li><a href="https://git-scm.com/">Git</a></li>
+<li>Some kind of shell prompt
+
+<ul>
+<li>Good options for Windows are <a href="https://www.cygwin.com/">Cygwin</a> or Git BASH
+(included in the Windows Git installation).</li>
+</ul>
+</li>
+</ul>
+
+<p>Launch a Bash-like shell, clone the repo to where your projects live, then install:</p>
+
+<div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> <span class="pl-k">~</span>/Projects
+git clone ssh://git@stash.ecoact.org:7999/eo/weblinkjs.git <span class="pl-k">&amp;&amp;</span> <span class="pl-c1">cd</span> weblinkjs
+npm install</pre></div>
+
+<p>Now you may either edit one of the existing modules, located in <code>/src/modules</code>,
+or create a new one.</p>
+
+<p>To create a module for a weblink, create a Javascript file named
+<code>/src/modules/&lt;SObjectType&gt;/&lt;Weblink API Name&gt;.js</code>. If the directory doesn't
+already exist for the SObjectType, create it first.</p>
+
+<p>Example template:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">export</span> <span class="pl-k">const</span> <span class="pl-c1">dependencies</span> <span class="pl-k">=</span> [
+  <span class="pl-s"><span class="pl-pds">'</span>//mycdn.com/path/to/cdn/resource<span class="pl-pds">'</span></span>
+];
+<span class="pl-k">export</span> <span class="pl-k">function</span> <span class="pl-en">exec</span>(<span class="pl-smi">params</span>) {
+  <span class="pl-c">// ... your weblink code goes here, parsing params as you see fit ...</span>
+};</pre></div>
+
+<p><strong>Remember</strong> to also add code for invoking the module in the weblink itself,
+as shown in the Usage section above.</p>
+
+<p>Once you're done making changes modules, build the library:</p>
+
+<div class="highlight highlight-source-shell"><pre>npm run build</pre></div>
+
+<p>Then deploy using your Salesforce credentials:</p>
+
+<div class="highlight highlight-source-shell"><pre>npm run deploy -- -u <span class="pl-k">&lt;</span>username<span class="pl-k">&gt;</span> -p <span class="pl-k">&lt;</span>password<span class="pl-k">&gt;</span> -t <span class="pl-k">&lt;</span>security token<span class="pl-k">&gt;</span> -l https://test.salesforce.com</pre></div>
+
+<p>To save time, you could build and deploy at the same time:</p>
+
+<div class="highlight highlight-source-shell"><pre>npm run build <span class="pl-k">&amp;&amp;</span> npm run deploy -- -u <span class="pl-k">&lt;</span>username<span class="pl-k">&gt;</span> -p <span class="pl-k">&lt;</span>password<span class="pl-k">&gt;</span> -t <span class="pl-k">&lt;</span>security token<span class="pl-k">&gt;</span> -l https://test.salesforce.com</pre></div>
+        </section>
+
+        <footer>
+          Weblinkjs is maintained by <a href="https://github.com/jdcrensh">jdcrensh</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
