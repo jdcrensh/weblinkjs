@@ -1,6 +1,6 @@
 {
   "name": "weblinkjs",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "An abstraction built around building, deploying, and invoking Javascript through custom buttons/links (weblinks) in Salesforce",
   "main": "src/index.js",
   "scripts": {
