@@ -33,7 +33,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-dialogs_alert.html">dialogs/alert</a></li><li><a href="module-dialogs_confirm.html">dialogs/confirm</a></li><li><a href="module-dialogs_index.html">dialogs/index</a></li><li><a href="module-lib_util.html">lib/util</a></li><li><a href="module-modules_Contact_index.html">modules/Contact/index</a></li><li><a href="module-modules_Contact_Say_Name_index.html">modules/Contact/Say_Name/index</a></li><li><a href="module-modules_index.html">modules/index</a></li><li><a href="module-weblinks.html">weblinks</a></li>
+					<li><a href="module-dialogs_alert.html">dialogs/alert</a></li><li><a href="module-dialogs_confirm.html">dialogs/confirm</a></li><li><a href="module-dialogs_index.html">dialogs/index</a></li><li><a href="module-lib_lodash.html">lib/lodash</a></li><li><a href="module-lib_util.html">lib/util</a></li><li><a href="module-modules_Contact_Say_Name_index.html">modules/Contact/Say_Name/index</a></li><li><a href="module-modules_index.html">modules/index</a></li><li><a href="module-weblinks.html">weblinks</a></li>
 				</ul>
 			</li>
 			
@@ -75,39 +75,9 @@
  * @see module:weblinks
  */
 import dialogs from 'dialogs';
+import config from './config.json';
 
-/**
- * External dependencies: jsforce
- */
-export const dependencies = [
-  '//cdnjs.cloudflare.com/ajax/libs/jsforce/1.6.0/jsforce.min.js'
-];
-
-/**
- * Some greetings
- */
-const greetings = [
-  'Hello',
-  'Salut',
-  'Hallo',
-  'Ciao',
-  '¡Hola',
-  'Shalom',
-  "Kon'nichiwa",
-  "G'day",
-  'Bonjour'
-];
-
-/**
- * SweetAlert's alert types
- */
-const alertTypes = [
-  'success',
-  'error',
-  'warning',
-  'info',
-  'question'
-];
+export {config};
 
 /**
  * Keep track of the number of times the user has clicked the button
@@ -128,6 +98,7 @@ const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
  * @param {string} params.contactId - `{!Contact.Id}`
  * @example &lt;caption>Save the following in a Javascript button for Contact&lt;/caption>
  * {!REQUIRESCRIPT('/resource/weblinkjs/weblinks.js')}
+ * 'use strict';
  * weblinks.invoke('Contact/Say_Name', {
  *   sessionId: '{!API.Session_ID}',
  *   userDisplayName: '{!$User.FirstName} {!$User.LastName}',
@@ -136,8 +107,8 @@ const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
  */
 export function exec({sessionId, userDisplayName, contactId}) {
   let conn = new jsforce.Connection({sessionId});
-  const greeting = getRandomElement(greetings);
-  const alertType = getRandomElement(alertTypes);
+  const greeting = getRandomElement(config.greetings);
+  const alertType = getRandomElement(config.alertTypes);
 
   // Get this contact's record, then show a message
   conn.sobject('Contact').retrieve(contactId, (err, contact) => {

@@ -33,7 +33,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-dialogs_alert.html">dialogs/alert</a></li><li><a href="module-dialogs_confirm.html">dialogs/confirm</a></li><li><a href="module-dialogs_index.html">dialogs/index</a></li><li><a href="module-lib_util.html">lib/util</a></li><li><a href="module-modules_Contact_index.html">modules/Contact/index</a></li><li><a href="module-modules_Contact_Say_Name_index.html">modules/Contact/Say_Name/index</a></li><li><a href="module-modules_index.html">modules/index</a></li><li><a href="module-weblinks.html">weblinks</a></li>
+					<li><a href="module-dialogs_alert.html">dialogs/alert</a></li><li><a href="module-dialogs_confirm.html">dialogs/confirm</a></li><li><a href="module-dialogs_index.html">dialogs/index</a></li><li><a href="module-lib_lodash.html">lib/lodash</a></li><li><a href="module-lib_util.html">lib/util</a></li><li><a href="module-modules_Contact_Say_Name_index.html">modules/Contact/Say_Name/index</a></li><li><a href="module-modules_index.html">modules/index</a></li><li><a href="module-weblinks.html">weblinks</a></li>
 				</ul>
 			</li>
 			
@@ -72,9 +72,11 @@
  * Main entry point
  * @module weblinks
  */
+import 'babel-polyfill';
 import $script from 'scriptjs';
 import modules from 'modules';
-import {noop, resolveExternal, objectQuery} from 'lib/util';
+import {resolveExternal} from 'lib/util';
+import _ from './lib/lodash';
 
 /**
  * Invoke a named module
@@ -84,11 +86,11 @@ import {noop, resolveExternal, objectQuery} from 'lib/util';
  * @param {string} name - relative path to the module under `src/modules`
  * @param {Object} [params={}] - named parameters to pass through to the module
  */
-export function invoke(name, params={}, callback=noop) {
+export function invoke(name, params={}) {
   if (typeof name !== 'string') {
-    throw new Error('first param to invoke must be a string');
+    throw new Error('first param to invoke() must be a string');
   }
-  const mod = objectQuery(modules, name.replace('/', '.'));
+  const mod = _.get(modules, name.replace('/', '.'));
   if (mod == null) {
     throw new Error(`module '${name}' does not exist`);
   }

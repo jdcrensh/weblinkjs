@@ -33,7 +33,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-dialogs_alert.html">dialogs/alert</a></li><li><a href="module-dialogs_confirm.html">dialogs/confirm</a></li><li><a href="module-dialogs_index.html">dialogs/index</a></li><li><a href="module-lib_util.html">lib/util</a></li><li><a href="module-modules_Contact_index.html">modules/Contact/index</a></li><li><a href="module-modules_Contact_Say_Name_index.html">modules/Contact/Say_Name/index</a></li><li><a href="module-modules_index.html">modules/index</a></li><li><a href="module-weblinks.html">weblinks</a></li>
+					<li><a href="module-dialogs_alert.html">dialogs/alert</a></li><li><a href="module-dialogs_confirm.html">dialogs/confirm</a></li><li><a href="module-dialogs_index.html">dialogs/index</a></li><li><a href="module-lib_lodash.html">lib/lodash</a></li><li><a href="module-lib_util.html">lib/util</a></li><li><a href="module-modules_Contact_Say_Name_index.html">modules/Contact/Say_Name/index</a></li><li><a href="module-modules_index.html">modules/index</a></li><li><a href="module-weblinks.html">weblinks</a></li>
 				</ul>
 			</li>
 			
@@ -149,182 +149,6 @@
             
 <hr>
 <dt>
-    <h4 class="name" id=".noop"><span class="type-signature">&lt;static> </span>noop()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>No-operation function</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_util.js.html">lib/util.js</a>,
-				 <a href="lib_util.js.html#sunlight-1-line-47">line 47</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id=".objectQuery"><span class="type-signature">&lt;static> </span>objectQuery()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Get a value from an object using a query string</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="lib_util.js.html">lib/util.js</a>,
-				 <a href="lib_util.js.html#sunlight-1-line-52">line 52</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
     <h4 class="name" id=".parseContext"><span class="type-signature">&lt;static> </span>parseContext(context)</h4>
     
     
@@ -430,7 +254,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="lib_util.js.html">lib/util.js</a>,
-				 <a href="lib_util.js.html#sunlight-1-line-33">line 33</a>
+				 <a href="lib_util.js.html#sunlight-1-line-52">line 52</a>
 			</li>
 		</ul>
 	</dd>
@@ -542,7 +366,7 @@
 		<ul class="dummy">
 			<li>
 				<a href="lib_util.js.html">lib/util.js</a>,
-				 <a href="lib_util.js.html#sunlight-1-line-12">line 12</a>
+				 <a href="lib_util.js.html#sunlight-1-line-22">line 22</a>
 			</li>
 		</ul>
 	</dd>
@@ -576,13 +400,22 @@
     
 
     
-        <h5>Example</h5>
+        <h5>Examples</h5>
         
         <p class="code-caption">From the module, export `dependencies` as an array of URLs</p>
     
     <pre class="sunlight-highlight-javascript">export const dependencies = [
   &#x27;//cdnjs.cloudflare.com/ajax/libs/jsforce/1.6.0/jsforce.min.js&#x27;
 ];</pre>
+
+        <p class="code-caption">If `dependencies` is not an export, also checks for a `config` export</p>
+    
+    <pre class="sunlight-highlight-javascript">// config.json
+{&quot;dependencies&quot;: [&quot;//cdnjs.cloudflare.com/ajax/libs/jsforce/1.6.0/jsforce.min.js&quot;]}
+
+// index.js
+import config from &#x27;./config.json&#x27;;
+export {config};</pre>
 
 
     
