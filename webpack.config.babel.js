@@ -7,21 +7,23 @@ import CleanWebpackPlugin from 'clean-webpack-plugin';
 
 const argv = yargs
   .usage('npm run build -- [args]')
-  .option('minify', {
+  .option('prod', {
     type: 'boolean',
-    default: true
+    default: false,
+    description: 'Production mode; minify, etc'
   })
   .argv;
 
 const plugins = [
   new CleanWebpackPlugin(['dist'])
 ];
-if (argv.minify) {
+if (argv.prod) {
   plugins.push(
     new webpack.optimize.UglifyJsPlugin({
       minimize: true,
       compress: {
-        warnings: false
+        warnings: false,
+        drop_console: true
       },
       comments: false
     })

@@ -1,0 +1,23 @@
+{
+  "dependencies": [
+    "//cdnjs.cloudflare.com/ajax/libs/jsforce/1.6.0/jsforce.min.js"
+  ],
+  "greetings": [
+    "Hello",
+    "Salut",
+    "Hallo",
+    "Ciao",
+    "¡Hola",
+    "Shalom",
+    "Kon'nichiwa",
+    "G'day",
+    "Bonjour"
+  ],
+  "alertTypes": [
+    "success",
+    "error",
+    "warning",
+    "info",
+    "question"
+  ]
+}

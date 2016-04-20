@@ -2,9 +2,11 @@
  * Main entry point
  * @module weblinks
  */
+import 'babel-polyfill';
 import $script from 'scriptjs';
 import modules from 'modules';
-import {noop, resolveExternal, objectQuery} from 'lib/util';
+import {resolveExternal} from 'lib/util';
+import _ from './lib/lodash';
 
 /**
  * Invoke a named module
@@ -14,11 +16,11 @@ import {noop, resolveExternal, objectQuery} from 'lib/util';
  * @param {string} name - relative path to the module under `src/modules`
  * @param {Object} [params={}] - named parameters to pass through to the module
  */
-export function invoke(name, params={}, callback=noop) {
+export function invoke(name, params={}) {
   if (typeof name !== 'string') {
-    throw new Error('first param to invoke must be a string');
+    throw new Error('first param to invoke() must be a string');
   }
-  const mod = objectQuery(modules, name.replace('/', '.'));
+  const mod = _.get(modules, name.replace('/', '.'));
   if (mod == null) {
     throw new Error(`module '${name}' does not exist`);
   }

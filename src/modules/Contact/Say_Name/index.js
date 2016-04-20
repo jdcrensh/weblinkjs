@@ -5,39 +5,9 @@
  * @see module:weblinks
  */
 import dialogs from 'dialogs';
+import config from './config.json';
 
-/**
- * External dependencies: jsforce
- */
-export const dependencies = [
-  '//cdnjs.cloudflare.com/ajax/libs/jsforce/1.6.0/jsforce.min.js'
-];
-
-/**
- * Some greetings
- */
-const greetings = [
-  'Hello',
-  'Salut',
-  'Hallo',
-  'Ciao',
-  '¡Hola',
-  'Shalom',
-  "Kon'nichiwa",
-  "G'day",
-  'Bonjour'
-];
-
-/**
- * SweetAlert's alert types
- */
-const alertTypes = [
-  'success',
-  'error',
-  'warning',
-  'info',
-  'question'
-];
+export {config};
 
 /**
  * Keep track of the number of times the user has clicked the button
@@ -58,6 +28,7 @@ const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
  * @param {string} params.contactId - `{!Contact.Id}`
  * @example <caption>Save the following in a Javascript button for Contact</caption>
  * {!REQUIRESCRIPT('/resource/weblinkjs/weblinks.js')}
+ * 'use strict';
  * weblinks.invoke('Contact/Say_Name', {
  *   sessionId: '{!API.Session_ID}',
  *   userDisplayName: '{!$User.FirstName} {!$User.LastName}',
@@ -66,8 +37,8 @@ const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
  */
 export function exec({sessionId, userDisplayName, contactId}) {
   let conn = new jsforce.Connection({sessionId});
-  const greeting = getRandomElement(greetings);
-  const alertType = getRandomElement(alertTypes);
+  const greeting = getRandomElement(config.greetings);
+  const alertType = getRandomElement(config.alertTypes);
 
   // Get this contact's record, then show a message
   conn.sobject('Contact').retrieve(contactId, (err, contact) => {
