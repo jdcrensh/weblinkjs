@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>weblinkjs Source: dialogs/alert.js</title>
+	<title>weblinkjs Source: modules/Contact/index.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -63,23 +63,17 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: dialogs/alert.js</h1>
+		<h1 class="page-title">Source: modules/Contact/index.js</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">/** @module */
-import {sweetAlert} from 'sweetalert2';
-import 'styles/sweetalert2.scss';
+import * as Say_Name from './Say_Name';
 
-/**
- * A SweetAlert2 alert dialog
- * @param {string} title - the primary message of the alert
- * @param {string} text - the secondary message of the alert
- * @param {string} [type='error'] - the type of the alert
- */
-export default (title, text, type='error') =>
-  sweetAlert({title, text, type});
+export default {
+  Say_Name
+};
 </pre>
     </article>
 </section>

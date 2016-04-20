@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>weblinkjs Source: modules/Contact/Say_Name.js</title>
+	<title>weblinkjs Module: modules/Contact/index</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -33,7 +33,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-dialogs_alert.html">dialogs/alert</a></li><li><a href="module-dialogs_confirm.html">dialogs/confirm</a></li><li><a href="module-dialogs_index.html">dialogs/index</a></li><li><a href="module-lib_util.html">lib/util</a></li><li><a href="module-modules_Contact_Say_Name.html">modules/Contact/Say_Name</a></li><li><a href="module-modules_index.html">modules/index</a></li><li><a href="module-weblinks.html">weblinks</a></li>
+					<li><a href="module-dialogs_alert.html">dialogs/alert</a></li><li><a href="module-dialogs_confirm.html">dialogs/confirm</a></li><li><a href="module-dialogs_index.html">dialogs/index</a></li><li><a href="module-lib_util.html">lib/util</a></li><li><a href="module-modules_Contact_index.html">modules/Contact/index</a></li><li><a href="module-modules_Contact_Say_Name_index.html">modules/Contact/Say_Name/index</a></li><li><a href="module-modules_index.html">modules/index</a></li><li><a href="module-weblinks.html">weblinks</a></li>
 				</ul>
 			</li>
 			
@@ -58,103 +58,98 @@
 <div class="row">
 
 	
-	<div class="col-md-12">
+	<div class="col-md-8">
 	
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: modules/Contact/Say_Name.js</h1>
-    
+	<h1 class="page-title">Module: modules/Contact/index</h1>
 <section>
-    <article>
-        <pre
-            class="sunlight-highlight-javascript linenums">/**
- * "Say Name" custom button on Contact.
- * This is an example module.
- * @module
- * @see module:weblinks
- */
-import dialogs from 'dialogs';
 
-/**
- * External dependencies: jsforce
- */
-export const dependencies = [
-  '//cdnjs.cloudflare.com/ajax/libs/jsforce/1.6.0/jsforce.min.js'
-];
+<header>
+    
+</header>
 
-/**
- * Some greetings
- */
-const greetings = [
-  'Hello',
-  'Salut',
-  'Hallo',
-  'Ciao',
-  '¡Hola',
-  'Shalom',
-  "Kon'nichiwa",
-  "G'day",
-  'Bonjour'
-];
 
-/**
- * SweetAlert's alert types
- */
-const alertTypes = [
-  'success',
-  'error',
-  'warning',
-  'info',
-  'question'
-];
+<article>
+    <div class="container-overview">
+    
+        
 
-/**
- * Keep track of the number of times the user has clicked the button
- */
-let timesClicked = 0;
+        
+<dl class="details">
+    
 
-/**
- * Get a random element from the given Array
- * @param {Array} arr - the Array
- * @returns a random element from the Array
- */
-const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
+	
 
-/**
- * @param {Object} params - the parameters passed to this module
- * @param {string} params.sessionId - `{!$Api.Session_ID}`
- * @param {string} params.userDisplayName - `'{!$User.FirstName} {!$User.LastName}'`
- * @param {string} params.contactId - `{!Contact.Id}`
- * @example &lt;caption>Save the following in a Javascript button for Contact&lt;/caption>
- * {!REQUIRESCRIPT('/resource/weblinkjs/weblinks.js')}
- * weblinks.invoke('Contact/Say_Name', {
- *   sessionId: '{!API.Session_ID}',
- *   userDisplayName: '{!$User.FirstName} {!$User.LastName}',
- *   contactId: '{!Contact.Id}'
- * });
- */
-export function exec({sessionId, userDisplayName, contactId}) {
-  let conn = new jsforce.Connection({sessionId});
-  const greeting = getRandomElement(greetings);
-  const alertType = getRandomElement(alertTypes);
+	
 
-  // Get this contact's record, then show a message
-  conn.sobject('Contact').retrieve(contactId, (err, contact) => {
-    if (err) { return alert(err); }
-    const s = ++timesClicked > 1 ? 's' : '';
-    dialogs.alert(
-      `${greeting} ${userDisplayName}!`,
-      `This contact's name is ${contact.FirstName} ${contact.LastName}, ` +
-      `and you've clicked this button ${timesClicked} time${s}.`,
-      alertType
-    );
-  });
-};
-</pre>
-    </article>
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="modules_Contact_index.js.html">modules/Contact/index.js</a>,
+				 <a href="modules_Contact_index.js.html#sunlight-1-line-1">line 1</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
 </section>
-
 
 
 
@@ -164,6 +159,10 @@ export function exec({sessionId, userDisplayName, contactId}) {
 
 	<div class="clearfix"></div>
 
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
 	
 
 </div>

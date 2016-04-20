@@ -33,7 +33,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-dialogs_alert.html">dialogs/alert</a></li><li><a href="module-dialogs_confirm.html">dialogs/confirm</a></li><li><a href="module-dialogs_index.html">dialogs/index</a></li><li><a href="module-lib_util.html">lib/util</a></li><li><a href="module-modules_Contact_Say_Name.html">modules/Contact/Say_Name</a></li><li><a href="module-modules_index.html">modules/index</a></li><li><a href="module-weblinks.html">weblinks</a></li>
+					<li><a href="module-dialogs_alert.html">dialogs/alert</a></li><li><a href="module-dialogs_confirm.html">dialogs/confirm</a></li><li><a href="module-dialogs_index.html">dialogs/index</a></li><li><a href="module-lib_util.html">lib/util</a></li><li><a href="module-modules_Contact_index.html">modules/Contact/index</a></li><li><a href="module-modules_Contact_Say_Name_index.html">modules/Contact/Say_Name/index</a></li><li><a href="module-modules_index.html">modules/index</a></li><li><a href="module-weblinks.html">weblinks</a></li>
 				</ul>
 			</li>
 			
@@ -93,19 +93,19 @@ benefit of developing using ES6 Javascript (with Babel).</p>
 <p>The project may be used as a template for centralizing an org's custom weblink
 javascript. Either fork this repository through Github, or clone and push to
 your own public/private remote.</p>
-<h2>Usage</h2><p>By convention, code for each weblink is defined inside a javascript module;
-i.e. <code>src/modules/&lt;SObjectType&gt;/&lt;Weblink API Name&gt;.js</code>. However, this is not
-enforced, so you may adapt with your own naming conventions as long as the
-modules reside in <code>src/modules/</code>.</p>
+<h2>Usage</h2><p>By convention, code for each weblink is defined inside a javascript module
+with paths that conform to <code>modules/&lt;SObjectType&gt;/&lt;Weblink API Name&gt;/index.js</code>.
+Note, this isn't strictly enforced, so you may adapt using your own naming
+conventions, as long as the modules reside in <code>src/modules/</code>.</p>
 <p>Since these are self-contained modules, code stored on the weblink itself
 is fairly minimal:</p>
 <pre class="prettyprint source lang-javascript"><code>{!REQUIRESCRIPT('/resource/weblinkjs/weblinks.js')}
 
 weblinks.invoke('Account/My_Custom_Weblink');</code></pre><p>Whereas its module would implement the logic:</p>
-<pre class="prettyprint source lang-javascript"><code>// src/modules/Account/My_Custom_Weblink.js
+<pre class="prettyprint source lang-javascript"><code>// src/modules/Account/My_Custom_Weblink/index.js
 export function exec(params) {
   alert('hello world!');
-};</code></pre><h3>Example</h3><p>See <a href="src/modules/Contact/Say_Name.js">Contact/Say_Name</a></p>
+};</code></pre><h3>Example</h3><p>See <a href="src/modules/Contact/Say_Name/index.js">Contact/Say_Name</a></p>
 <h3>Parameters</h3><p>One minor drawback of moving code to static resources is that merge fields
 cannot be parsed. To get around this limitation, you can pass them as named
 parameters for the module to parse.</p>
@@ -139,15 +139,17 @@ API calls your org can make in a single day.</p>
 </ul>
 </li>
 </ul>
-<p>Launch a Bash-like shell, clone the repo to where your projects live, then install:</p>
-<pre class="prettyprint source lang-bash"><code>cd ~/Projects
-git clone ssh://git@stash.ecoact.org:7999/eo/weblinkjs.git && cd weblinkjs
-npm install</code></pre><p>Now you may either edit one of the existing modules, located in <code>/src/modules</code>,
+<p>Launch a Bash-like shell, clone this repo to where your projects live, then install:</p>
+<pre class="prettyprint source lang-bash"><code>npm install</code></pre><p>Now you may either edit an existing module, located in <code>modules</code>,
 or create a new one.</p>
-<p>To create a module for a weblink, create a Javascript file named
-<code>/src/modules/&lt;SObjectType&gt;/&lt;Weblink API Name&gt;.js</code>. If the directory doesn't
-already exist for the SObjectType, create it first.</p>
-<p>Example template:</p>
+<p>To create a module for a weblink, create a folder for the module with the path
+<code>modules/&lt;SObjectType&gt;/&lt;Weblink API Name&gt;/</code>.</p>
+<p>Create a folder if one doesn't already exist for the SObjectType. Also create an
+<code>index.js</code> file that will be used solely to import modules of this type and export them
+to <code>modules/index.js</code> (of which will also need to be edited to include the new
+SObjectType folder).</p>
+<p>In the module's folder, create <code>index.js</code>, which will be the module's entry point.</p>
+<p>An example template for <code>index.js</code>:</p>
 <pre class="prettyprint source lang-javascript"><code>export const dependencies = [
   '//mycdn.com/path/to/cdn/resource'
 ];

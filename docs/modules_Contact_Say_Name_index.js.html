@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>weblinkjs Source: dialogs/alert.js</title>
+	<title>weblinkjs Source: modules/Contact/Say_Name/index.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -63,23 +63,94 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: dialogs/alert.js</h1>
+		<h1 class="page-title">Source: modules/Contact/Say_Name/index.js</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">/** @module */
-import {sweetAlert} from 'sweetalert2';
-import 'styles/sweetalert2.scss';
+            class="sunlight-highlight-javascript linenums">/**
+ * "Say Name" custom button on Contact.
+ * This is an example module.
+ * @module
+ * @see module:weblinks
+ */
+import dialogs from 'dialogs';
 
 /**
- * A SweetAlert2 alert dialog
- * @param {string} title - the primary message of the alert
- * @param {string} text - the secondary message of the alert
- * @param {string} [type='error'] - the type of the alert
+ * External dependencies: jsforce
  */
-export default (title, text, type='error') =>
-  sweetAlert({title, text, type});
+export const dependencies = [
+  '//cdnjs.cloudflare.com/ajax/libs/jsforce/1.6.0/jsforce.min.js'
+];
+
+/**
+ * Some greetings
+ */
+const greetings = [
+  'Hello',
+  'Salut',
+  'Hallo',
+  'Ciao',
+  '¡Hola',
+  'Shalom',
+  "Kon'nichiwa",
+  "G'day",
+  'Bonjour'
+];
+
+/**
+ * SweetAlert's alert types
+ */
+const alertTypes = [
+  'success',
+  'error',
+  'warning',
+  'info',
+  'question'
+];
+
+/**
+ * Keep track of the number of times the user has clicked the button
+ */
+let timesClicked = 0;
+
+/**
+ * Get a random element from the given Array
+ * @param {Array} arr - the Array
+ * @returns a random element from the Array
+ */
+const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+/**
+ * @param {Object} params - the parameters passed to this module
+ * @param {string} params.sessionId - `{!$Api.Session_ID}`
+ * @param {string} params.userDisplayName - `'{!$User.FirstName} {!$User.LastName}'`
+ * @param {string} params.contactId - `{!Contact.Id}`
+ * @example &lt;caption>Save the following in a Javascript button for Contact&lt;/caption>
+ * {!REQUIRESCRIPT('/resource/weblinkjs/weblinks.js')}
+ * weblinks.invoke('Contact/Say_Name', {
+ *   sessionId: '{!API.Session_ID}',
+ *   userDisplayName: '{!$User.FirstName} {!$User.LastName}',
+ *   contactId: '{!Contact.Id}'
+ * });
+ */
+export function exec({sessionId, userDisplayName, contactId}) {
+  let conn = new jsforce.Connection({sessionId});
+  const greeting = getRandomElement(greetings);
+  const alertType = getRandomElement(alertTypes);
+
+  // Get this contact's record, then show a message
+  conn.sobject('Contact').retrieve(contactId, (err, contact) => {
+    if (err) { return alert(err); }
+    const s = ++timesClicked > 1 ? 's' : '';
+    dialogs.alert(
+      `${greeting} ${userDisplayName}!`,
+      `This contact's name is ${contact.FirstName} ${contact.LastName}, ` +
+      `and you've clicked this button ${timesClicked} time${s}.`,
+      alertType
+    );
+  });
+};
 </pre>
     </article>
 </section>
