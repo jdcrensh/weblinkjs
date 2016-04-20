@@ -4,7 +4,7 @@
  */
 import $script from 'scriptjs';
 import modules from 'modules';
-import {noop, resolveExternal} from 'lib/util';
+import {noop, resolveExternal, objectQuery} from 'lib/util';
 
 /**
  * Invoke a named module
@@ -18,7 +18,7 @@ export function invoke(name, params={}, callback=noop) {
   if (typeof name !== 'string') {
     throw new Error('first param to invoke must be a string');
   }
-  const mod = modules[name];
+  const mod = objectQuery(modules, name.replace('/', '.'));
   if (mod == null) {
     throw new Error(`module '${name}' does not exist`);
   }

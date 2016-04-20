@@ -1,6 +1,10 @@
 /**
+ * Exports module groups (i.e. by SObjectType folder)
  * @module
- * @see module:lib/util
  */
-import {parseContext} from 'lib/util';
-export default parseContext(require.context('./', true, /^(?!.*index).*\.js$/));
+
+import Contact from './Contact';
+
+export default {
+  Contact
+};

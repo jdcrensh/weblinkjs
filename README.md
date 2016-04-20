@@ -13,10 +13,10 @@ your own public/private remote.
 
 ## Usage
 
-By convention, code for each weblink is defined inside a javascript module;
-i.e. `src/modules/<SObjectType>/<Weblink API Name>.js`. However, this is not
-enforced, so you may adapt with your own naming conventions as long as the
-modules reside in `src/modules/`.
+By convention, code for each weblink is defined inside a javascript module
+with paths that conform to `modules/<SObjectType>/<Weblink API Name>/index.js`.
+Note, this isn't strictly enforced, so you may adapt using your own naming
+conventions, as long as the modules reside in `src/modules/`.
 
 Since these are self-contained modules, code stored on the weblink itself
 is fairly minimal:
@@ -30,7 +30,7 @@ weblinks.invoke('Account/My_Custom_Weblink');
 Whereas its module would implement the logic:
 
 ```javascript
-// src/modules/Account/My_Custom_Weblink.js
+// src/modules/Account/My_Custom_Weblink/index.js
 export function exec(params) {
   alert('hello world!');
 };
@@ -39,7 +39,7 @@ export function exec(params) {
 
 ### Example
 
-See [Contact/Say_Name](src/modules/Contact/Say_Name.js)
+See [Contact/Say_Name](src/modules/Contact/Say_Name/index.js)
 
 
 ### Parameters
@@ -86,22 +86,26 @@ Requirements:
   - Good options for Windows are [Cygwin](https://www.cygwin.com/) or Git BASH
     (included in the Windows Git installation).
 
-Launch a Bash-like shell, clone the repo to where your projects live, then install:
+Launch a Bash-like shell, clone this repo to where your projects live, then install:
 
 ```bash
-cd ~/Projects
-git clone ssh://git@stash.ecoact.org:7999/eo/weblinkjs.git && cd weblinkjs
 npm install
 ```
 
-Now you may either edit one of the existing modules, located in `/src/modules`,
+Now you may either edit an existing module, located in `modules`,
 or create a new one.
 
-To create a module for a weblink, create a Javascript file named
-`/src/modules/<SObjectType>/<Weblink API Name>.js`. If the directory doesn't
-already exist for the SObjectType, create it first.
+To create a module for a weblink, create a folder for the module with the path
+`modules/<SObjectType>/<Weblink API Name>/`.
 
-Example template:
+Create a folder if one doesn't already exist for the SObjectType. Also create an
+`index.js` file that will be used solely to import modules of this type and export them
+to `modules/index.js` (of which will also need to be edited to include the new
+SObjectType folder).
+
+In the module's folder, create `index.js`, which will be the module's entry point.
+
+An example template for `index.js`:
 
 ```javascript
 export const dependencies = [

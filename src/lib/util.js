@@ -2,7 +2,7 @@
 import $script from 'scriptjs';
 
 /**
- * Resolves external dependencies using script.js
+ * Resolves external dependencies in order using script.js
  * @example <caption>From the module, export `dependencies` as an array of URLs</caption>
  * export const dependencies = [
  *   '//cdnjs.cloudflare.com/ajax/libs/jsforce/1.6.0/jsforce.min.js'
@@ -10,7 +10,18 @@ import $script from 'scriptjs';
  * @see [github.com/ded/script.js]{@link https://github.com/ded/script.js/}
  */
 export function resolveExternal(mod, callback) {
-  $script(mod.dependencies || [], 'bundle');
+  const len = mod.dependencies.length;
+  const loadScript = (i=0) => {
+    $script(mod.dependencies[i], i);
+    $script.ready(i, () => {
+      if (++i < len) {
+        loadScript(i);
+      } else {
+        $script.done('bundle');
+      }
+    });
+  };
+  loadScript();
   $script.ready('bundle', callback);
 };
 
@@ -34,3 +45,21 @@ export function parseContext(context) {
  * No-operation function
  */
 export function noop() {};
+
+/**
+ * Get a value from an object using a query string
+ */
+export function objectQuery(obj, query) {
+  query = query.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
+  query = query.replace(/^\./, '');           // strip a leading dot
+  let parts = query.split('.');
+  for (let i = 0, len = parts.length; i < len; ++i) {
+    let key = parts[i];
+    if (key in obj) {
+      obj = obj[key];
+    } else {
+      return;
+    }
+  }
+  return obj;
+};
