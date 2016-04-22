@@ -1,6 +1,8 @@
 # weblinkjs
 
-* [API Documentation](https://jdcrensh.github.io/weblinkjs/docs)
+[![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
+
+* [API Documentation](https://redteal.github.io/weblinkjs/docs)
 
 An abstraction built around building, deploying, and invoking Javascript
 through custom buttons/links (weblinks) in Salesforce. Including an added

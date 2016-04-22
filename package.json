@@ -9,7 +9,7 @@
     "deploy": "./bin/deploy.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": "jdcrensh/weblinkjs",
+  "repository": "redteal/weblinkjs",
   "author": "jon@redteal.com",
   "license": "MIT",
   "devDependencies": {
