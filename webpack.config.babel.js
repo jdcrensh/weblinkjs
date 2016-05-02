@@ -49,7 +49,7 @@ export default {
       exclude: /node_modules/
     }, {
       test: require.resolve('sweetalert2'),
-      loader: 'legacy'
+      loader: 'imports?window=>{}!exports?window.swal'
     }]
   },
   output: {

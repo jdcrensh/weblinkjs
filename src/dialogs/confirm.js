@@ -1,5 +1,5 @@
 /** @module */
-import {sweetAlert} from 'sweetalert2';
+import sweetAlert from 'sweetalert2';
 import 'styles/sweetalert2.scss';
 
 /**

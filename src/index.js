@@ -3,7 +3,6 @@
  * @module weblinks
  */
 import 'babel-polyfill';
-import $script from 'scriptjs';
 import modules from 'modules';
 import {resolveExternal} from 'lib/util';
 import _ from './lib/lodash';
