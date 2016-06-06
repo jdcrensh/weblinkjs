@@ -38,7 +38,7 @@
     "yargs": "^4.7.1"
   },
   "dependencies": {
-    "babel-polyfill": "^6.9.0",
+    "babel-polyfill": "^6.9.1",
     "lodash.get": "^4.2.1",
     "scriptjs": "^2.5.8",
     "sweetalert2": "^3.2.3"
