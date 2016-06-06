@@ -24,7 +24,7 @@
     "fs-extra": "^0.30.0",
     "glob": "^7.0.3",
     "imports-loader": "^0.6.5",
-    "ink-docstrap": "^1.2.0",
+    "ink-docstrap": "^1.2.1",
     "jsdoc": "^3.4.0",
     "jsforce": "^1.6.5",
     "json-loader": "^0.5.4",
