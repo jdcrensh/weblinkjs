@@ -1,0 +1,18 @@
+parser: babel-eslint
+extends:
+  - redteal
+plugins:
+  - import
+rules:
+  arrow-body-style: off
+  camelcase: off
+  no-console: off
+  no-alert: off
+  no-param-reassign: off
+  max-len: [error, 120]
+  func-names: off
+  newline-per-chained-call: off
+settings:
+  import/resolver:
+    webpack:
+      config: 'webpack.config.babel.js'

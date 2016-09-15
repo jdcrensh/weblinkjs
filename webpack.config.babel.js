@@ -1,68 +1,71 @@
-import webpack from 'webpack';
-import path from 'path';
-import glob from 'glob';
-import yargs from 'yargs';
-
 import CleanWebpackPlugin from 'clean-webpack-plugin';
+import path from 'path';
+import webpack from 'webpack';
 
-const argv = yargs
-  .usage('npm run build -- [args]')
-  .option('prod', {
-    type: 'boolean',
-    default: false,
-    description: 'Production mode; minify, etc'
-  })
-  .argv;
-
-const plugins = [
-  new CleanWebpackPlugin(['dist'])
+let plugins = [
+  new CleanWebpackPlugin(['dist']),
+  new webpack.optimize.DedupePlugin(),
+  new webpack.optimize.OccurrenceOrderPlugin(true),
 ];
-if (argv.prod) {
-  plugins.push(
-    new webpack.optimize.UglifyJsPlugin({
+
+if (process.env.NODE_ENV === 'production') {
+  plugins = plugins.concat([
+    new webpack.LoaderOptionsPlugin({
       minimize: true,
+      debug: false,
+    }),
+    new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
-        drop_console: true
       },
-      comments: false
-    })
-  );
-};
+      output: {
+        comments: false,
+      },
+      sourceMap: true,
+    }),
+  ]);
+}
 
 export default {
   devtool: 'source-map',
   entry: {
-    weblinks: ['index.js']
+    weblinks: path.join(__dirname, 'src', 'index.js'),
   },
   module: {
     loaders: [{
       test: /\.js$/,
       loader: 'babel',
-      exclude: /node_modules/
+      exclude: /node_modules/,
     }, {
       test: /\.json$/,
-      loader: 'json'
+      loader: 'json',
     }, {
       test: /\.s?css$/,
       loaders: ['style', 'css', 'postcss', 'sass'],
-      exclude: /node_modules/
+      exclude: /node_modules/,
     }, {
       test: require.resolve('sweetalert2'),
-      loader: 'imports?window=>{}!exports?window.swal'
-    }]
+      loader: 'imports?this=>window',
+    }],
   },
   output: {
     path: 'dist',
-    filename: 'weblinks.js',
+    filename: '[name].js',
     library: 'weblinks',
-    libraryTarget: 'this',
-    publicPath: '/resource/weblinkjs/'
+    libraryTarget: 'umd',
+    umdNamedDefine: true,
+    publicPath: '/resource/weblinkjs/',
+    pathinfo: true,
+  },
+  externals: {
+    jquery: 'jQuery',
   },
   resolve: {
-    root: path.resolve('./src'),
+    modules: [
+      path.join(__dirname, 'src'),
+      path.join(__dirname, 'node_modules'),
+    ],
     extensions: ['', '.js'],
-    modulesDirectories: ['node_modules', 'src']
   },
-  plugins
+  plugins,
 };

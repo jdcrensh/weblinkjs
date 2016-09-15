@@ -15,7 +15,7 @@ your own public/private remote.
 
 ## Usage
 
-By convention, code for each weblink is defined inside a javascript module
+By convention, code for each weblink is defined inside an ES6 javascript module
 with paths that conform to `modules/<SObjectType>/<Weblink API Name>/index.js`.
 Note, this isn't strictly enforced, so you may adapt using your own naming
 conventions, as long as the modules reside in `src/modules/`.
@@ -33,7 +33,7 @@ Whereas its module would implement the logic:
 
 ```javascript
 // src/modules/Account/My_Custom_Weblink/index.js
-export function exec(params) {
+export default function (params) {
   alert('hello world!');
 };
 ```
@@ -46,18 +46,26 @@ See [Contact/Say_Name](src/modules/Contact/Say_Name/index.js)
 
 ### Parameters
 
-One minor drawback of moving code to static resources is that merge fields
-cannot be parsed. To get around this limitation, you can pass them as named
-parameters for the module to parse.
+The biggest drawback of moving code to static resources is that merge fields
+cannot be parsed. To get around this limitation, data can be passed into modules
+as named parameters for the module to parse; example:
 
+Button code
 ```javascript
 {!REQUIRESCRIPT('/resource/weblinkjs')}
 'use strict';
 
-weblinks.invoke('Account/My_Custom_Weblink', {
+weblinks.Account.My_Custom_Weblink({
   sessionId: '{!API.Session_ID}',
   id: '{!Work_Order__c.Id}'
 });
+```
+
+Module code
+```javascript
+export default function ({ sessionId, id }) {
+  // use parameters here
+}
 ```
 
 Be aware that other than the record's Id, most values **cannot** be relied on
@@ -67,14 +75,14 @@ the page is loaded.
 One potentially common scenario where this would be problematic occurs when one
 user (Bob) opens a record's detail page, then a few moments later, the same
 user (or some other, doesn't matter) makes some field update that would result
-in the value differing from the value it was the moment before the page was
-initially loaded by Bob. In this scenario, if Bob then clicks a javascript
-button using merge fields, the data he'd be using will now be out-of-date.
+in the value differing from the value it was the moment the page was loaded by
+Bob. In this scenario, if Bob then clicks a javascript button coded with merge
+fields, the data he'd be using will now be out-of-date.
 
-A solution to the above scenario is to only pass the record's Id, and use
-Ajax to query the record every time the button is clicked (using Salesforce's
-`connection.js` or [`jsforce`](https://jsforce.github.io) via CDN). Note that
-this has a downside of its own, which is that it counts against the limit of
+A solution to the above scenario is to pass only the record's Id and the user's
+session Id, then within the module, use Ajax to query the record every time the
+button is clicked (using Salesforce's `connection.js` or [`jsforce`](https://jsforce.github.io)).
+Note that this has a downside of its own, which is that it counts against the limit of
 API calls your org can make in a single day.
 
 
@@ -110,16 +118,13 @@ In the module's folder, create `index.js`, which will be the module's entry poin
 An example template for `index.js`:
 
 ```javascript
-export const dependencies = [
-  '//mycdn.com/path/to/cdn/resource'
-];
-export function exec(params) {
+export default function (params) {
   // ... your weblink code goes here, parsing params as you see fit ...
 };
 ```
 
 **Remember** to also add code for invoking the module in the weblink itself,
-as shown in the Usage section above.
+as shown in the `Usage` section above.
 
 Once you're done making changes, build the library:
 
@@ -133,8 +138,13 @@ Then deploy using your Salesforce credentials:
 npm run deploy -- -u <username> -p <password> -t <security token> -l https://test.salesforce.com
 ```
 
-To save time, you could build and deploy at the same time:
+To save time, you could build and deploy at the same time (and also set the environment):
 
+Development
 ```bash
-npm run build && npm run deploy -- -u <username> -p <password> -t <security token> -l https://test.salesforce.com
+export NODE_ENV=development && npm run build && npm run deploy -- -u <username> -p <password> -t <security token> -l https://test.salesforce.com
+```
+Production
+```bash
+export NODE_ENV=production && npm run build && npm run deploy -- -u <username> -p <password> -t <security token> -l https://test.salesforce.com
 ```

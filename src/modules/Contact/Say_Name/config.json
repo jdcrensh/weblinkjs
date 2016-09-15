@@ -1,7 +1,4 @@
 {
-  "dependencies": [
-    "//cdnjs.cloudflare.com/ajax/libs/jsforce/1.6.0/jsforce.min.js"
-  ],
   "greetings": [
     "Hello",
     "Salut",

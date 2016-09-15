@@ -4,10 +4,11 @@
  * @module
  * @see module:weblinks
  */
-import dialogs from 'dialogs';
 import config from './config.json';
+import dialogs from 'dialogs';
+import jsforce from 'jsforce/core';
 
-export {config};
+export { config };
 
 /**
  * Keep track of the number of times the user has clicked the button
@@ -35,14 +36,17 @@ const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
  *   contactId: '{!Contact.Id}'
  * });
  */
-export function exec({sessionId, userDisplayName, contactId}) {
-  let conn = new jsforce.Connection({sessionId});
+export function exec({ sessionId, userDisplayName, contactId }) {
+  const conn = new jsforce.Connection({ sessionId });
   const greeting = getRandomElement(config.greetings);
   const alertType = getRandomElement(config.alertTypes);
 
   // Get this contact's record, then show a message
   conn.sobject('Contact').retrieve(contactId, (err, contact) => {
-    if (err) { return alert(err); }
+    if (err) {
+      dialogs.alert('Error', err);
+      return;
+    }
     const s = ++timesClicked > 1 ? 's' : '';
     dialogs.alert(
       `${greeting} ${userDisplayName}!`,
@@ -51,4 +55,4 @@ export function exec({sessionId, userDisplayName, contactId}) {
       alertType
     );
   });
-};
+}
