@@ -1,7 +1,5 @@
 # weblinkjs
 
-[![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
-
 * [API Documentation](https://redteal.github.io/weblinkjs/docs)
 
 An abstraction built around building, deploying, and invoking Javascript
@@ -25,8 +23,7 @@ is fairly minimal:
 
 ```javascript
 {!REQUIRESCRIPT('/resource/weblinkjs/weblinks.js')}
-
-weblinks.invoke('Account/My_Custom_Weblink');
+weblinks.Account.My_Custom_Weblink();
 ```
 
 Whereas its module would implement the logic:
