@@ -5,10 +5,8 @@
  * @see module:weblinks
  */
 import config from './config.json';
-import dialogs from 'dialogs';
+import swal from 'lib/sweetalert2';
 import jsforce from 'jsforce/core';
-
-export { config };
 
 /**
  * Keep track of the number of times the user has clicked the button
@@ -30,13 +28,13 @@ const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
  * @example <caption>Save the following in a Javascript button for Contact</caption>
  * {!REQUIRESCRIPT('/resource/weblinkjs/weblinks.js')}
  * 'use strict';
- * weblinks.invoke('Contact/Say_Name', {
+ * weblinks.Contact.Say_Name({
  *   sessionId: '{!API.Session_ID}',
  *   userDisplayName: '{!$User.FirstName} {!$User.LastName}',
  *   contactId: '{!Contact.Id}'
  * });
  */
-export function exec({ sessionId, userDisplayName, contactId }) {
+export default function ({ sessionId, userDisplayName, contactId }) {
   const conn = new jsforce.Connection({ sessionId });
   const greeting = getRandomElement(config.greetings);
   const alertType = getRandomElement(config.alertTypes);
@@ -44,11 +42,11 @@ export function exec({ sessionId, userDisplayName, contactId }) {
   // Get this contact's record, then show a message
   conn.sobject('Contact').retrieve(contactId, (err, contact) => {
     if (err) {
-      dialogs.alert('Error', err);
+      swal.alert('Error', err);
       return;
     }
     const s = ++timesClicked > 1 ? 's' : '';
-    dialogs.alert(
+    swal.alert(
       `${greeting} ${userDisplayName}!`,
       `This contact's name is ${contact.FirstName} ${contact.LastName}, ` +
       `and you've clicked this button ${timesClicked} time${s}.`,

@@ -2,11 +2,10 @@
 
 * [API Documentation](https://redteal.github.io/weblinkjs/docs)
 
-An abstraction built around building, deploying, and invoking Javascript
-through custom buttons/links (weblinks) in Salesforce. Including an added
-benefit of developing using ES6 Javascript (with Babel).
+Build, deploy, and invoke ES2015+ Javascript in custom buttons/links (weblinks)
+in Salesforce! Includes support for creating dialogs with ReactJS.
 
-The project may be used as a template for centralizing an org's custom weblink
+Use this project as a template for centralizing your org's custom weblink
 javascript. Either fork this repository through Github, or clone and push to
 your own public/private remote.
 
@@ -38,8 +37,21 @@ export default function (params) {
 
 ### Example
 
-See [Contact/Say_Name](src/modules/Contact/Say_Name/index.js)
+<img src="https://raw.github.com/jdcrensh/weblinkjs/master/say-name-dialog.png" width="600">
 
+#### Implementation
+See the included example: [Contact/Say_Name](src/modules/Contact/Say_Name/index.js)
+
+#### Button/link code
+```javascript
+{!REQUIRESCRIPT('/resource/weblinkjs/weblinks.js')}
+'use strict';
+weblinks.Contact.Say_Name({
+  sessionId: '{!API.Session_ID}',
+  userDisplayName: '{!$User.FirstName} {!$User.LastName}',
+  contactId: '{!Contact.Id}'
+});
+```
 
 ### Parameters
 

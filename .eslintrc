@@ -1,18 +1,27 @@
 parser: babel-eslint
-extends:
-  - redteal
-plugins:
-  - import
+extends: airbnb
+env:
+  browser: true
 rules:
   arrow-body-style: off
   camelcase: off
-  no-console: off
-  no-alert: off
-  no-param-reassign: off
-  max-len: [error, 120]
+  class-methods-use-this: off
+  consistent-return: off
   func-names: off
+  import/imports-first: off
+  max-len: [ error, 120 ]
+  new-cap: [ error, { capIsNewExceptionPattern: "^Immutable\\.." } ]
   newline-per-chained-call: off
+  no-alert: off
+  no-console: off
+  no-param-reassign: off
+  no-return-assign: off
+  no-shadow: off
+  no-underscore-dangle: off
 settings:
+  import/core-modules:
+    - clean-webpack-plugin
+    - webpack
   import/resolver:
     webpack:
       config: 'webpack.config.babel.js'
