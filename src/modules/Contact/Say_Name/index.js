@@ -18,7 +18,7 @@ let timesClicked = 0;
  * @param {Array} arr - the Array
  * @returns a random element from the Array
  */
-const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
+const getRandomElement = arr => arr[Math.floor(Math.random() * arr.length)];
 
 /**
  * @param {Object} params - the parameters passed to this module
@@ -45,7 +45,8 @@ export default function ({ sessionId, userDisplayName, contactId }) {
       swal.alert('Error', err);
       return;
     }
-    const s = ++timesClicked > 1 ? 's' : '';
+    timesClicked += 1;
+    const s = timesClicked > 1 ? 's' : '';
     swal.alert(
       `${greeting} ${userDisplayName}!`,
       `This contact's name is ${contact.FirstName} ${contact.LastName}, ` +

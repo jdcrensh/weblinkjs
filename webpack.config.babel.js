@@ -4,7 +4,7 @@ import path from 'path';
 import webpack from 'webpack';
 
 const babelrc = () => {
-  const json = JSON.parse(fs.readFileSync('.babelrc'));
+  const json = JSON.parse(fs.readFileSync(path.join(__dirname, '.babelrc')));
   const res = {
     ...json,
     babelrc: false,
@@ -75,9 +75,10 @@ export default {
     pathinfo: true,
   },
   resolve: {
+    root: __dirname,
     modules: [
-      path.join(__dirname, 'src'),
-      path.join(__dirname, 'node_modules'),
+      'node_modules',
+      'src',
     ],
     extensions: ['', '.js', '.jsx'],
   },
